@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📝 Transcription Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      padding: 30px;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px 40px;
+      max-width: 800px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2, h3 {
+      color: #333;
+    }
+
+    audio {
+      margin: 10px 0;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+    }
+
+    input[type="submit"], button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover, button:hover {
+      background-color: #0056b3;
+    }
+
+    a {
+      display: inline-block;
+      margin: 10px 5px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📝 Transcription for: {{ filename }}</h2>
+
+    <!-- Original Uploaded Audio -->
+    <div class="section">
+      <h3>▶️ Original Audio:</h3>
+      <audio controls>
+        <source src="{{ url_for('uploaded_file', filename=filename) }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+
+    <!-- Whisper Transcription -->
+    <div class="section">
+      <h3>📄 Transcribed Text:</h3>
+      <p>{{ transcription }}</p>
+      <a href="{{ url_for('download_file', filename=transcript_file) }}">
+        <button>Download Transcript (.txt)</button>
+      </a>
+    </div>
+
+    <!-- TTS Audio -->
+    <div class="section">
+      <h3>🔊 Listen to TTS Output:</h3>
+      <audio controls>
+        <source src="{{ url_for('uploaded_file', filename=tts_file) }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+      <a href="{{ url_for('download_file', filename=tts_file) }}">
+        <button>Download TTS Audio (.mp3)</button>
+      </a>
+    </div>
+
+    <!-- Optional: TTS Conversion from new Text -->
+    <div class="section">
+      <h3>🗣️ Convert Custom Text to Speech</h3>
+      <form method="POST" enctype="multipart/form-data" action="/tts">
+        <label>Type or paste text:</label><br>
+        <textarea name="text" rows="5"></textarea><br><br>
+
+        <label>Or upload a .txt file:</label>
+        <input type="file" name="textfile"><br><br>
+
+        <label>Select language:</label>
+        <select name="language">
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="ja">Japanese</option>
+          <option value="zh-CN">Chinese</option>
+        </select><br><br>
+
+        <input type="submit" value="Convert to Audio">
+      </form>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="section">
+      <a href="{{ url_for('upload_file') }}">🔁 Transcribe Another</a> |
+      <a href="{{ url_for('home') }}">🏠 Home</a>
+    </div>
+  </div>
+</body>
+</html>

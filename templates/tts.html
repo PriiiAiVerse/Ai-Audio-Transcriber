@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>🔊 Text to Speech</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 30px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            max-width: 700px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        select, input[type="file"] {
+            font-size: 1rem;
+        }
+
+        input[type="submit"], a.button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover, a.button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔊 Text to Speech Converter</h2>
+
+        {% if audio_file %}
+        <div class="section">
+            <h3>▶️ Generated Audio:</h3>
+            <audio controls>
+                <source src="{{ url_for('uploaded_file', filename=audio_file) }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio><br>
+            <a class="button" href="{{ url_for('uploaded_file', filename=audio_file) }}" download>⬇️ Download Audio</a>
+        </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="section">
+                <label>📄 Type or paste text:</label><br>
+                <textarea name="text" rows="8">{{ text }}</textarea>
+            </div>
+
+            <div class="section">
+                <label>📁 Or upload a .txt file:</label><br>
+                <input type="file" name="textfile">
+            </div>
+
+            <div class="section">
+                <label>🌐 Select language:</label><br>
+                <select name="language">
+                    <option value="en">English</option>
+                    <option value="hi">Hindi</option>
+                    <option value="es">Spanish</option>
+                    <option value="fr">French</option>
+                    <option value="de">German</option>
+                    <option value="ja">Japanese</option>
+                    <option value="zh-CN">Chinese</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Convert to Audio">
+        </form>
+
+        <a href="{{ url_for('home') }}">🏠 Back to Home</a>
+    </div>
+</body>
+</html>
